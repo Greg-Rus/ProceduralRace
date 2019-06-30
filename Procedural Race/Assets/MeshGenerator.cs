@@ -11,7 +11,6 @@ public static class MeshGenerator
         int vertexIndex = 0;
         float topLeftX = (width - 1) / -2f;
         float topLeftZ = (height - 1) / -2f;
-
         MeshData meshData = new MeshData(width, height);
 
         for (int y = 0; y < height; y++)
@@ -61,6 +60,16 @@ public class MeshData
         Triangles[_triangleIndex+1] = b;
         Triangles[_triangleIndex+2] = c;
         _triangleIndex += 3;
+    }
+
+    public Vector3 GetVertexAt(int x, int y)
+    {
+        return Vertices[x + y * MeshWidth];
+    }
+
+    public void SetVertexAt(int x, int y, Vector3 vertex)
+    {
+        Vertices[x + y * MeshWidth] = vertex;
     }
 
     public Mesh CreateMesh()

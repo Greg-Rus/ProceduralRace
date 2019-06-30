@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class MapGenerator : MonoBehaviour
 {
@@ -43,6 +44,9 @@ public class MapGenerator : MonoBehaviour
             {
                 var noiseValue = map[x, y];
                 var color = Regions.First(region => region.Height >= noiseValue).Color;
+                color = new Color(color.r + Random.Range(0,0.1f),
+                    color.g + Random.Range(0, 0.1f),
+                    color.b + Random.Range(0, 0.1f));
                 colorMap[y * Width + x] = color;
             }
         }
@@ -56,11 +60,17 @@ public class MapGenerator : MonoBehaviour
                 Display.DrawTexture(TextureGenerator.TextureFromColorMap(colorMap, Width, Height));
                 break;
             case DrawMode.Mesh:
-                Display.DrawMesh(MeshGenerator.GenerateTerrainMesh(DeformNoiseMap(map), GetCurrentMeshDeformationData()), TextureGenerator.TextureFromColorMap(colorMap, Width, Height));
+                Display.DrawMesh(MeshGenerator.GenerateTerrainMesh(DeformNoiseMap(map), GetCurrentMeshDeformationData()), 
+                    TextureGenerator.TextureFromColorMap(colorMap, Width, Height));
                 break;
             case DrawMode.MeshWithRoad:
-                Display.DrawMeshAndRoad(MeshGenerator.GenerateTerrainMesh(DeformNoiseMap(map), GetCurrentMeshDeformationData()), TextureGenerator.TextureFromColorMap(colorMap, Width, Height));
-
+                Display.DrawMeshAndRoad(MeshGenerator.GenerateTerrainMesh(DeformNoiseMap(map), GetCurrentMeshDeformationData()), 
+                    TextureGenerator.TextureFromColorMap(colorMap, Width, Height));
+                break;
+            case DrawMode.MeshWithAStarRoad:
+                Display.DrawMeshAndPlotRoad(MeshGenerator.GenerateTerrainMesh(DeformNoiseMap(map), GetCurrentMeshDeformationData()), 
+                    TextureGenerator.TextureFromColorMap(colorMap, Width, Height),
+                    map);
                 break;
             default:
                 throw new ArgumentOutOfRangeException();

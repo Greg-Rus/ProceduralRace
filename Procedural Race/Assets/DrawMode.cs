@@ -3,5 +3,6 @@
     NoiseMap = 0,
     ColorMap,
     Mesh,
-    MeshWithRoad
+    MeshWithRoad,
+    MeshWithAStarRoad
 }
